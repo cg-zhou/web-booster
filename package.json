@@ -1,0 +1,59 @@
+{
+  "name": "web-booster",
+  "version": "0.1.0",
+  "description": "Framework-agnostic Web Components and style tokens for modern sites.",
+  "type": "module",
+  "main": "dist/web-booster.js",
+  "module": "dist/web-booster.esm.js",
+  "exports": {
+    ".": {
+      "import": "./dist/web-booster.esm.js",
+      "require": "./dist/web-booster.cjs.js",
+      "default": "./dist/web-booster.esm.js"
+    },
+    "./styles.css": "./dist/web-booster.css"
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run build:lib && npm run build:css",
+    "build:lib": "rollup -c",
+    "build:css": "node ./scripts/build-css.mjs",
+    "build:demo": "vite build --outDir demo-dist",
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "web-components",
+    "custom-elements",
+    "design-system",
+    "ui-library",
+    "styles"
+  ],
+  "author": "cg-zhou",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cg-zhou/web-booster.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cg-zhou/web-booster/issues"
+  },
+  "homepage": "https://github.com/cg-zhou/web-booster#readme",
+  "dependencies": {
+    "lucide": "latest"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-replace": "^6.0.2",
+    "@rollup/plugin-terser": "^0.4.4",
+    "rollup": "^4.9.1",
+    "vite": "^8.0.0"
+  }
+}

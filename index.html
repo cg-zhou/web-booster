@@ -1,0 +1,131 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Booster</title>
+  </head>
+  <body class="wb-theme">
+    <header class="wb-demo-topnav">
+      <div class="wb-demo-topnav__inner">
+        <div class="wb-demo-topnav__brand">Web Booster</div>
+        <nav class="wb-demo-topnav__nav">
+          <a href="#typography" aria-current="page">Typography</a>
+          <a href="#cards">Cards</a>
+          <a href="#buttons">Buttons</a>
+          <a href="#alerts">Alerts</a>
+          <a href="#icons">Icons</a>
+          <a href="#code">Code</a>
+        </nav>
+        <div class="wb-demo-topnav__actions">
+          <wb-button class="wb-demo-github" href="https://github.com/cg-zhou/web-booster" target="_blank">
+            <wb-icon name="github" size="16"></wb-icon>
+            GitHub
+          </wb-button>
+        </div>
+      </div>
+    </header>
+
+    <main class="wb-page wb-stack">
+      <section class="wb-stack" id="typography">
+        <h1 class="wb-section-title">跨框架的原生组件和样式</h1>
+        <wb-card>
+          <div slot="title">段落与链接</div>
+          <wb-paragraph lead>
+            web-booster 用原生 Custom Elements 提供跨技术栈可复用 UI。你可以在一段正文里直接穿插
+            <wb-link href="https://developer.mozilla.org/docs/Web/API/Web_components" target="_blank">Web Components 文档</wb-link>
+            或者把它接进 Vue、React、ASP.NET 页面。
+          </wb-paragraph>
+          <wb-paragraph>
+            对外暴露的设计令牌统一使用 <wb-inline-code>--wb-*</wb-inline-code> 前缀，组件标签统一使用 <wb-inline-code>wb-*</wb-inline-code> 前缀。
+          </wb-paragraph>
+        </wb-card>
+      </section>
+
+      <section class="wb-stack" id="cards">
+        <h2 class="wb-section-title">Cards</h2>
+        <div class="wb-grid">
+          <wb-card title="带标题卡片">
+            <wb-paragraph>默认卡片适合承载说明、表单片段、状态摘要或引导文案。</wb-paragraph>
+          </wb-card>
+          <wb-card>
+            <div slot="title">无属性标题卡片</div>
+            <wb-paragraph>你也可以使用 title slot，这样后面扩展副标题或操作区会更自然。</wb-paragraph>
+          </wb-card>
+        </div>
+      </section>
+
+      <section class="wb-stack" id="buttons">
+        <h2 class="wb-section-title">Buttons</h2>
+        <div class="wb-grid">
+          <wb-card title="按钮尺寸">
+            <div class="wb-demo-button-stack">
+              <div class="wb-demo-button-row">
+                <wb-button size="sm" data-demo-click-message="Small 按钮已点击。">Small</wb-button>
+                <wb-button size="md" data-demo-click-message="Medium 按钮已点击。">Medium</wb-button>
+                <wb-button size="lg" data-demo-click-message="Large 按钮已点击。">Large</wb-button>
+              </div>
+              <div class="wb-demo-button-row">
+                <wb-button size="sm" variant="primary" data-demo-click-message="Small Primary 按钮已点击。">Small Primary</wb-button>
+                <wb-button size="md" variant="primary" data-demo-click-message="Medium Primary 按钮已点击。">Medium Primary</wb-button>
+                <wb-button size="lg" variant="primary" data-demo-click-message="Large Primary 按钮已点击。">Large Primary</wb-button>
+              </div>
+              <p class="wb-demo-button-note">所有尺寸都带 hover 态，便于直接看交互反馈和密度差异。</p>
+            </div>
+          </wb-card>
+          <wb-card title="按钮状态">
+            <div class="wb-demo-button-row">
+              <wb-button variant="primary" data-demo-click-message="Primary 按钮示例已点击。">
+                <wb-icon name="sparkles" size="16"></wb-icon>
+                Primary
+              </wb-button>
+              <wb-button data-demo-click-message="Secondary 按钮示例已点击。">Secondary</wb-button>
+              <wb-button disabled>Disabled</wb-button>
+            </div>
+          </wb-card>
+        </div>
+      </section>
+
+      <section class="wb-stack" id="alerts">
+        <h2 class="wb-section-title">Messages</h2>
+        <div class="wb-grid">
+          <wb-card title="操作反馈提示">
+            <wb-paragraph>
+              这类提示适合在用户执行保存、提交、删除等操作后短暂出现，不打断流程，只反馈结果。
+            </wb-paragraph>
+            <div style="display:flex;flex-wrap:wrap;gap:12px;">
+              <wb-button data-message-type="info" data-message-text="这是一个普通提示。">普通提示</wb-button>
+              <wb-button variant="primary" data-message-type="success" data-message-text="这是一个成功提示。">成功提示</wb-button>
+              <wb-button data-message-type="warning" data-message-text="这是一个警告提示。">警告提示</wb-button>
+              <wb-button data-message-type="error" data-message-text="这是一个错误提示。">错误提示</wb-button>
+            </div>
+          </wb-card>
+        </div>
+      </section>
+
+      <section class="wb-stack" id="icons">
+        <h2 class="wb-section-title">Icons</h2>
+        <div class="wb-icon-grid">
+          <div class="wb-icon-card"><wb-icon name="sparkles"></wb-icon><span>Sparkles</span></div>
+          <div class="wb-icon-card"><wb-icon name="menu"></wb-icon><span>Menu</span></div>
+          <div class="wb-icon-card"><wb-icon name="copy"></wb-icon><span>Copy</span></div>
+          <div class="wb-icon-card"><wb-icon name="check"></wb-icon><span>Check</span></div>
+          <div class="wb-icon-card"><wb-icon name="code"></wb-icon><span>Code</span></div>
+          <div class="wb-icon-card"><wb-icon name="github"></wb-icon><span>Github</span></div>
+        </div>
+      </section>
+      <section class="wb-stack" id="code">
+        <h2 class="wb-section-title">Code</h2>
+        <wb-card title="代码文本组件">
+          <wb-code language="html">
+&lt;wb-button onclick="WebBooster.message.success('发布成功。')"&gt;
+  发布
+&lt;/wb-button&gt;
+          </wb-code>
+        </wb-card>
+      </section>
+    </main>
+
+    <script type="module" src="/demo/main.js"></script>
+  </body>
+  </html>
