@@ -16,18 +16,8 @@ export default [
   {
     input: 'src/index.js',
     output: {
-      file: 'dist/web-booster.js',
-      format: 'umd',
-      name: 'WebBooster',
-      sourcemap: true
-    },
-    plugins: basePlugins
-  },
-  {
-    input: 'src/index.js',
-    output: {
       file: 'dist/web-booster.min.js',
-      format: 'umd',
+      format: 'iife',
       name: 'WebBooster',
       sourcemap: true
     },
@@ -39,16 +29,6 @@ export default [
       file: 'dist/web-booster.esm.js',
       format: 'esm',
       sourcemap: true
-    },
-    plugins: basePlugins
-  },
-  {
-    input: 'src/index.js',
-    output: {
-      file: 'dist/web-booster.cjs.js',
-      format: 'cjs',
-      sourcemap: true,
-      exports: 'named'
     },
     plugins: basePlugins
   }

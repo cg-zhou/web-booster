@@ -3,14 +3,10 @@
   "version": "0.1.0",
   "description": "Framework-agnostic Web Components and style tokens for modern sites.",
   "type": "module",
-  "main": "dist/web-booster.js",
+  "main": "dist/web-booster.esm.js",
   "module": "dist/web-booster.esm.js",
   "exports": {
-    ".": {
-      "import": "./dist/web-booster.esm.js",
-      "require": "./dist/web-booster.cjs.js",
-      "default": "./dist/web-booster.esm.js"
-    },
+    ".": "./dist/web-booster.esm.js",
     "./styles.css": "./dist/web-booster.css"
   },
   "files": [
@@ -21,12 +17,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "npm run build:lib && npm run build:css",
-    "build:lib": "rollup -c",
-    "build:css": "node ./scripts/build-css.mjs",
-    "build:demo": "vite build --outDir demo-dist",
-    "preview": "vite preview",
-    "prepublishOnly": "npm run build"
+    "build": "node ./scripts/build.mjs"
   },
   "keywords": [
     "web-components",

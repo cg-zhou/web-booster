@@ -8,8 +8,8 @@
 import { WBButton } from './components/wb-button.js';
 import { WBCard } from './components/wb-card.js';
 import { WBCode } from './components/wb-code.js';
+import { getRegisteredWBIconNames, registerWBIcon, registerWBIcons, WBIcon } from './components/wb-icon.js';
 import { WBInlineCode } from './components/wb-inline-code.js';
-import { WBIcon } from './components/wb-icon.js';
 import { WBLink } from './components/wb-link.js';
 import { WBMessage, WBMessageHost, showMessage } from './components/wb-message.js';
 import { WBParagraph } from './components/wb-paragraph.js';
@@ -18,6 +18,9 @@ export {
   WBButton,
   WBCard,
   WBCode,
+  getRegisteredWBIconNames,
+  registerWBIcon,
+  registerWBIcons,
   WBInlineCode,
   WBIcon,
   WBLink,
@@ -32,6 +35,9 @@ if (typeof window !== 'undefined') {
     WBButton,
     WBCard,
     WBCode,
+    getRegisteredWBIconNames,
+    registerWBIcon,
+    registerWBIcons,
     WBInlineCode,
     WBIcon,
     WBLink,
@@ -39,6 +45,11 @@ if (typeof window !== 'undefined') {
     WBMessageHost,
     WBParagraph,
     showMessage,
-    message: WBMessage
+    message: WBMessage,
+    icons: {
+      names: getRegisteredWBIconNames,
+      register: registerWBIcons,
+      registerOne: registerWBIcon
+    }
   };
 }

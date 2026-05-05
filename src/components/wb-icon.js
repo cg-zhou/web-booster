@@ -1,8 +1,19 @@
-import { icons as lucideIcons } from 'lucide';
-import { WBBaseElement, defineComponent, toPascalCase } from './base-element.js';
+import { Check, CircleX, Code, Copy, Info, Menu, Sparkles, TriangleAlert } from 'lucide';
+import { WBBaseElement, defineComponent } from './base-element.js';
 
 const normalizedIconMap = new Map();
-const customIconMap = new Map([
+const builtinIconEntries = [
+  ['sparkles', Sparkles],
+  ['menu', Menu],
+  ['copy', Copy],
+  ['check', Check],
+  ['code', Code],
+  ['info', Info],
+  ['triangle-alert', TriangleAlert],
+  ['circle-x', CircleX]
+];
+
+const customIconEntries = [
   [
     'github',
     {
@@ -15,30 +26,79 @@ const customIconMap = new Map([
       }
     }
   ]
-]);
+];
 
 function normalizeIconName(value) {
   return String(value).toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 
-function ensureIconMap() {
+function normalizeIconDefinition(iconDefinition) {
+  if (Array.isArray(iconDefinition)) {
+    return { nodes: iconDefinition };
+  }
+
+  if (iconDefinition && Array.isArray(iconDefinition.nodes)) {
+    return {
+      nodes: iconDefinition.nodes,
+      svgAttributes: iconDefinition.svgAttributes ?? {}
+    };
+  }
+
+  return null;
+}
+
+export function registerWBIcon(name, iconDefinition) {
+  const normalizedName = normalizeIconName(name);
+  const normalizedDefinition = normalizeIconDefinition(iconDefinition);
+
+  if (!normalizedName || !normalizedDefinition) {
+    return false;
+  }
+
+  normalizedIconMap.set(normalizedName, normalizedDefinition);
+  return true;
+}
+
+export function registerWBIcons(iconDefinitions) {
+  if (!iconDefinitions || typeof iconDefinitions !== 'object') {
+    return 0;
+  }
+
+  let registeredCount = 0;
+
+  for (const [name, iconDefinition] of Object.entries(iconDefinitions)) {
+    if (registerWBIcon(name, iconDefinition)) {
+      registeredCount += 1;
+    }
+  }
+
+  return registeredCount;
+}
+
+function ensureBuiltinIcons() {
   if (normalizedIconMap.size > 0) {
     return normalizedIconMap;
   }
 
-  for (const [key, iconData] of Object.entries(lucideIcons)) {
-    if (!iconData || !Array.isArray(iconData)) {
-      continue;
-    }
-
-    normalizedIconMap.set(normalizeIconName(key), { nodes: iconData });
+  for (const [name, iconDefinition] of builtinIconEntries) {
+    registerWBIcon(name, iconDefinition);
   }
 
-  for (const [key, iconData] of customIconMap.entries()) {
-    normalizedIconMap.set(normalizeIconName(key), iconData);
+  for (const [name, iconDefinition] of customIconEntries) {
+    registerWBIcon(name, iconDefinition);
   }
 
   return normalizedIconMap;
+}
+
+export function getRegisteredWBIconNames() {
+  ensureBuiltinIcons();
+  return [...normalizedIconMap.keys()];
+}
+
+function getIconDefinition(name) {
+  const iconMap = ensureBuiltinIcons();
+  return iconMap.get(normalizeIconName(name));
 }
 
 function buildSvgNode(node) {
@@ -51,9 +111,7 @@ function buildSvgNode(node) {
 }
 
 function renderIconSvg(name, size) {
-  const iconMap = ensureIconMap();
-  const normalizedName = normalizeIconName(name);
-  const iconDefinition = iconMap.get(normalizedName) ?? iconMap.get(normalizeIconName(toPascalCase(name)));
+  const iconDefinition = getIconDefinition(name);
 
   if (!iconDefinition) {
     return '';
@@ -69,7 +127,7 @@ function renderIconSvg(name, size) {
     'stroke-width': '2',
     'stroke-linecap': 'round',
     'stroke-linejoin': 'round',
-    class: `lucide lucide-${String(name).toLowerCase()}`,
+    class: `lucide lucide-${normalizeIconName(name)}`,
     ...(iconDefinition.svgAttributes ?? {})
   };
 

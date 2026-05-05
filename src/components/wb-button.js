@@ -62,7 +62,6 @@ export class WBButton extends WBBaseElement {
           border-color: var(--_wb-button-border-hover);
           color: var(--_wb-button-text-hover);
           box-shadow: 0 4px 12px #0f172a1a;
-          filter: brightness(1.1);
         }
 
         .button--primary {
