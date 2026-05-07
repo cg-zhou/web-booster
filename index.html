@@ -13,6 +13,7 @@
           <a href="#typography" aria-current="page">Typography</a>
           <a href="#cards">Cards</a>
           <a href="#buttons">Buttons</a>
+          <a href="#inputs">Inputs</a>
           <a href="#alerts">Alerts</a>
           <a href="#icons">Icons</a>
           <a href="#code">Code</a>
@@ -81,6 +82,27 @@
               </wb-button>
               <wb-button data-demo-click-message="Secondary 按钮示例已点击。">Secondary</wb-button>
               <wb-button disabled>Disabled</wb-button>
+            </div>
+          </wb-card>
+        </div>
+      </section>
+
+      <section class="wb-stack" id="inputs">
+        <h2 class="wb-section-title">Inputs</h2>
+        <div class="wb-grid wb-grid--inputs">
+          <wb-card title="Rotate">
+            <div class="wb-demo-control-stack">
+              <wb-number id="demo-rotate" label="Rotation" min="0" max="360" step="1" value="0"></wb-number>
+              <div class="wb-demo-button-row">
+                <wb-button size="sm" variant="primary" data-adjust-target="demo-rotate" data-adjust-delta="90">Rotate +90deg</wb-button>
+                <wb-button size="sm" data-adjust-target="demo-rotate" data-adjust-delta="-90">Rotate -90deg</wb-button>
+              </div>
+            </div>
+          </wb-card>
+          <wb-card title="Flip">
+            <div class="wb-demo-control-stack">
+              <wb-switch id="demo-flip-x" label="Flip horizontal"></wb-switch>
+              <wb-switch id="demo-flip-y" label="Flip vertical"></wb-switch>
             </div>
           </wb-card>
         </div>

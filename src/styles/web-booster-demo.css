@@ -100,6 +100,16 @@
   gap: 18px;
 }
 
+.wb-grid--inputs {
+  align-items: start;
+}
+
+.wb-demo-control-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .wb-demo-button-stack {
   display: flex;
   flex-direction: column;

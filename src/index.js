@@ -12,7 +12,9 @@ import { getRegisteredWBIconNames, registerWBIcon, registerWBIcons, WBIcon } fro
 import { WBInlineCode } from './components/wb-inline-code.js';
 import { WBLink } from './components/wb-link.js';
 import { WBMessage, WBMessageHost, showMessage } from './components/wb-message.js';
+import { WBNumber } from './components/wb-number.js';
 import { WBParagraph } from './components/wb-paragraph.js';
+import { WBSwitch } from './components/wb-switch.js';
 
 export {
   WBButton,
@@ -26,7 +28,9 @@ export {
   WBLink,
   WBMessage,
   WBMessageHost,
+  WBNumber,
   WBParagraph,
+  WBSwitch,
   showMessage
 };
 
@@ -43,7 +47,9 @@ if (typeof window !== 'undefined') {
     WBLink,
     WBMessage,
     WBMessageHost,
+    WBNumber,
     WBParagraph,
+    WBSwitch,
     showMessage,
     message: WBMessage,
     icons: {

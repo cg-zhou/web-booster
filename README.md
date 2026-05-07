@@ -8,7 +8,9 @@
 - `wb-link`：段落内链接文本
 - `wb-card`：卡片容器，支持标题属性和标题 slot
 - `wb-button`：按钮，支持 `primary` / `secondary` 和 `sm` / `md` / `lg`
+- `wb-number`：数值调节，支持拖动 slider、直接输入和上下微调
 - `wb-message`：轻提示能力，支持 `info` / `success` / `warning` / `error`
+- `wb-switch`：开关，功能类似 checkbox，支持 `checked` / `disabled`
 - `wb-icon`：内置少量常用图标，并支持按需注册新图标
 - `wb-code`：代码文本，支持一键复制
 - `styles.css`：对外暴露的精简 `--wb-*` 设计令牌
@@ -118,6 +120,10 @@ import 'web-booster';
     这是一个 <wb-link href="https://example.com">可点击链接</wb-link>。
   </wb-paragraph>
 </wb-card>
+
+<wb-number label="Rotate" min="0" max="360" step="1" value="90"></wb-number>
+
+<wb-switch label="Enable shadows" checked></wb-switch>
 ```
 
 ### 通过 CDN 引入
