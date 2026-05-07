@@ -1,6 +1,6 @@
 {
   "name": "web-booster",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Framework-agnostic Web Components and style tokens for modern sites.",
   "type": "module",
   "main": "dist/web-booster.esm.js",
