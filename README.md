@@ -45,6 +45,58 @@ npm run build
 - `dist/web-booster.esm.js`
 - `dist/web-booster.css`
 
+执行 `npm pack` / `npm publish` 前会自动触发一次 `npm run build`，避免发布旧的 `dist` 产物。
+
+## 发布前检查
+
+建议每次发版前至少执行：
+
+```bash
+npm install
+npm run build
+npm pack --dry-run
+```
+
+重点确认：
+
+- `package.json` 中的 `version` 已更新
+- `npm pack --dry-run` 输出中包含 `dist/web-booster.esm.js`、`dist/web-booster.min.js`、`dist/web-booster.css`
+- README 示例与当前导出 API 一致
+
+## 发布到 NPM
+
+首次发布前先登录并确认账号：
+
+```bash
+npm login
+npm whoami
+```
+
+更新版本号：
+
+```bash
+npm version patch
+```
+
+如果这次是功能发布或破坏性更新，也可以改用：
+
+```bash
+npm version minor
+npm version major
+```
+
+最后正式发布：
+
+```bash
+npm publish
+```
+
+如果只是想先验证账号和权限，可以先发到 npm 的校验流程但不真正上传：
+
+```bash
+npm publish --dry-run
+```
+
 ## 使用方式
 
 ### 通过 NPM 引入
