@@ -2,6 +2,7 @@ import { Check, CircleX, Code, Copy, Info, Menu, Sparkles, TriangleAlert } from 
 import { WBBaseElement, defineComponent } from './base-element.js';
 
 const normalizedIconMap = new Map();
+const connectedIconElements = new Set();
 const builtinIconEntries = [
   ['sparkles', Sparkles],
   ['menu', Menu],
@@ -47,15 +48,40 @@ function normalizeIconDefinition(iconDefinition) {
   return null;
 }
 
-export function registerWBIcon(name, iconDefinition) {
+function refreshConnectedIcons(names) {
+  if (connectedIconElements.size === 0 || names.size === 0) {
+    return;
+  }
+
+  connectedIconElements.forEach((iconElement) => {
+    const currentName = normalizeIconName(iconElement.getAttribute('name') ?? 'sparkles');
+
+    if (names.has(currentName)) {
+      iconElement.render();
+    }
+  });
+}
+
+function storeWBIcon(name, iconDefinition) {
   const normalizedName = normalizeIconName(name);
   const normalizedDefinition = normalizeIconDefinition(iconDefinition);
 
   if (!normalizedName || !normalizedDefinition) {
-    return false;
+    return null;
   }
 
   normalizedIconMap.set(normalizedName, normalizedDefinition);
+  return normalizedName;
+}
+
+export function registerWBIcon(name, iconDefinition) {
+  const normalizedName = storeWBIcon(name, iconDefinition);
+
+  if (!normalizedName) {
+    return false;
+  }
+
+  refreshConnectedIcons(new Set([normalizedName]));
   return true;
 }
 
@@ -65,12 +91,18 @@ export function registerWBIcons(iconDefinitions) {
   }
 
   let registeredCount = 0;
+  const registeredNames = new Set();
 
   for (const [name, iconDefinition] of Object.entries(iconDefinitions)) {
-    if (registerWBIcon(name, iconDefinition)) {
+    const normalizedName = storeWBIcon(name, iconDefinition);
+
+    if (normalizedName) {
       registeredCount += 1;
+      registeredNames.add(normalizedName);
     }
   }
+
+  refreshConnectedIcons(registeredNames);
 
   return registeredCount;
 }
@@ -144,7 +176,12 @@ export class WBIcon extends WBBaseElement {
   }
 
   connectedCallback() {
+    connectedIconElements.add(this);
     this.render();
+  }
+
+  disconnectedCallback() {
+    connectedIconElements.delete(this);
   }
 
   attributeChangedCallback() {
