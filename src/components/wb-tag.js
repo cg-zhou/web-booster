@@ -58,13 +58,13 @@ export class WBTag extends WBBaseElement {
         .tag--default {
           background: var(--wb-panel);
           color: var(--wb-text);
-          border: 1px solid var(--wb-card-border);
+          border: 1px solid var(--wb-primary-border);
         }
 
         .tag--primary {
           background: var(--wb-primary-light);
           color: var(--wb-primary);
-          border: 1px solid var(--wb-primary-light);
+          border: 1px solid var(--wb-primary-border);
         }
 
         .tag--success {

@@ -2,7 +2,8 @@
   /* Primary */
   --wb-primary: #1e293b;
   --wb-primary-strong: #0f172a;
-  --wb-primary-light: #1e293b1a;
+  --wb-primary-light: #1e293b14;
+  --wb-primary-border: #1e293b25;
 
   /* Success */
   --wb-success: #16a34a;
