@@ -1,6 +1,33 @@
-import '../src/styles/web-booster.css';
-import '../src/styles/web-booster-demo.css';
 import '../src/index.js';
+
+const navLinks = document.querySelectorAll('.wb-demo-topnav__nav a');
+const sections = Array.from(navLinks).map(link => {
+  const id = link.getAttribute('href')?.slice(1);
+  return id ? document.getElementById(id) : null;
+}).filter(Boolean);
+
+function updateActiveLink() {
+  const scrollY = window.scrollY + 100;
+
+  let activeIndex = 0;
+  for (let i = sections.length - 1; i >= 0; i--) {
+    if (sections[i].offsetTop <= scrollY) {
+      activeIndex = i;
+      break;
+    }
+  }
+
+  navLinks.forEach((link, i) => {
+    if (i === activeIndex) {
+      link.setAttribute('aria-current', 'page');
+    } else {
+      link.removeAttribute('aria-current');
+    }
+  });
+}
+
+window.addEventListener('scroll', updateActiveLink, { passive: true });
+updateActiveLink();
 
 document.addEventListener('click', (event) => {
 	const trigger = event.target.closest('wb-button[data-message-type]');
