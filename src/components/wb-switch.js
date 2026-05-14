@@ -95,7 +95,7 @@ export class WBSwitch extends WBBaseElement {
           width: 34px;
           height: 20px;
           border-radius: 999px;
-          background: var(--wb-switch-track, #cbd5e1);
+          background: var(--wb-switch-track);
           position: relative;
           transition: background 0.18s ease;
           box-shadow: inset 0 0 0 1px #0f172a12;
@@ -126,7 +126,7 @@ export class WBSwitch extends WBBaseElement {
         }
 
         .switch:focus-visible .track {
-          box-shadow: 0 0 0 3px var(--wb-focus-ring, #3b82f633);
+          box-shadow: 0 0 0 3px var(--wb-focus-ring);
         }
       </style>
       <button

@@ -203,7 +203,7 @@ export class WBNumber extends WBBaseElement {
           padding: 0 10px;
           border: 1px solid var(--wb-input-border, var(--wb-button-border));
           border-radius: var(--wb-radius-md);
-          background: var(--wb-input-bg, #ffffff);
+          background: var(--wb-input-bg);
           color: var(--wb-text);
           box-sizing: border-box;
           font: inherit;

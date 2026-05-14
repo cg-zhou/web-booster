@@ -10,11 +10,13 @@ import { WBCard } from './components/wb-card.js';
 import { WBCode } from './components/wb-code.js';
 import { getRegisteredWBIconNames, registerWBIcon, registerWBIcons, WBIcon } from './components/wb-icon.js';
 import { WBInlineCode } from './components/wb-inline-code.js';
+import { WBInput } from './components/wb-input.js';
 import { WBLink } from './components/wb-link.js';
 import { WBMessage, WBMessageHost, showMessage } from './components/wb-message.js';
 import { WBNumber } from './components/wb-number.js';
 import { WBParagraph } from './components/wb-paragraph.js';
 import { WBSwitch } from './components/wb-switch.js';
+import { WBTag } from './components/wb-tag.js';
 
 export {
   WBButton,
@@ -25,12 +27,14 @@ export {
   registerWBIcons,
   WBInlineCode,
   WBIcon,
+  WBInput,
   WBLink,
   WBMessage,
   WBMessageHost,
   WBNumber,
   WBParagraph,
   WBSwitch,
+  WBTag,
   showMessage
 };
 
@@ -44,12 +48,14 @@ if (typeof window !== 'undefined') {
     registerWBIcons,
     WBInlineCode,
     WBIcon,
+    WBInput,
     WBLink,
     WBMessage,
     WBMessageHost,
     WBNumber,
     WBParagraph,
     WBSwitch,
+    WBTag,
     showMessage,
     message: WBMessage,
     icons: {

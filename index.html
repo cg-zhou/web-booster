@@ -14,6 +14,7 @@
           <a href="#cards">Cards</a>
           <a href="#buttons">Buttons</a>
           <a href="#inputs">Inputs</a>
+          <a href="#tags">Tags</a>
           <a href="#alerts">Alerts</a>
           <a href="#icons">Icons</a>
           <a href="#code">Code</a>
@@ -103,6 +104,45 @@
             <div class="wb-demo-control-stack">
               <wb-switch id="demo-flip-x" label="Flip horizontal"></wb-switch>
               <wb-switch id="demo-flip-y" label="Flip vertical"></wb-switch>
+            </div>
+          </wb-card>
+        </div>
+        <div class="wb-grid">
+          <wb-card title="文本输入">
+            <div class="wb-demo-control-stack">
+              <wb-input label="Name" placeholder="Enter your name"></wb-input>
+              <wb-input label="Email" type="email" placeholder="user@example.com"></wb-input>
+            </div>
+          </wb-card>
+          <wb-card title="输入状态">
+            <div class="wb-demo-control-stack">
+              <wb-input label="Readonly" value="readonly@example.com" readonly></wb-input>
+              <wb-input label="Disabled" value="disabled@example.com" disabled></wb-input>
+              <wb-input label="Error" value="invalid-email" error="Please enter a valid email address"></wb-input>
+            </div>
+          </wb-card>
+        </div>
+      </section>
+
+      <section class="wb-stack" id="tags">
+        <h2 class="wb-section-title">Tags</h2>
+        <div class="wb-grid">
+          <wb-card title="标签变体">
+            <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+              <wb-tag>Default</wb-tag>
+              <wb-tag variant="primary">Primary</wb-tag>
+              <wb-tag variant="success">Success</wb-tag>
+              <wb-tag variant="warning">Warning</wb-tag>
+              <wb-tag variant="error">Error</wb-tag>
+            </div>
+          </wb-card>
+          <wb-card title="可关闭标签">
+            <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+              <wb-tag variant="primary" closable>Vue</wb-tag>
+              <wb-tag variant="success" closable>React</wb-tag>
+              <wb-tag variant="warning" closable>Angular</wb-tag>
+              <wb-tag closable>Default</wb-tag>
+              <wb-tag disabled>Disabled</wb-tag>
             </div>
           </wb-card>
         </div>

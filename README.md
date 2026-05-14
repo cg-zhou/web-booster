@@ -2,7 +2,7 @@
 
 原生 Web Components + 设计令牌样式库，目标是为多技术栈站点提供一套统一的基础 UI。
 
-当前首批内置内容：
+当前内置内容：
 
 - `wb-paragraph`：段落文本
 - `wb-link`：段落内链接文本
@@ -13,6 +13,8 @@
 - `wb-switch`：开关，功能类似 checkbox，支持 `checked` / `disabled`
 - `wb-icon`：内置少量常用图标，并支持按需注册新图标
 - `wb-code`：代码文本，支持一键复制
+- `wb-input`：输入框，支持 label、placeholder、disabled、readonly、error 状态
+- `wb-tag`：标签，支持 `default` / `primary` / `success` / `warning` / `error` 变体，可关闭
 - `styles.css`：对外暴露的精简 `--wb-*` 设计令牌
 
 视觉基线当前优先对齐 `moon-lottie` 示例站。
@@ -124,6 +126,11 @@ import 'web-booster';
 <wb-number label="Rotate" min="0" max="360" step="1" value="90"></wb-number>
 
 <wb-switch label="Enable shadows" checked></wb-switch>
+
+<wb-input label="Name" placeholder="Enter your name"></wb-input>
+
+<wb-tag variant="primary">Tag</wb-tag>
+<wb-tag variant="success" closable>Closable</wb-tag>
 ```
 
 ### 通过 CDN 引入
@@ -173,7 +180,6 @@ registerWBIcons({
 
 ## 后续建议
 
-- 增加表单类组件：`wb-input`、`wb-tag`、`wb-badge`
 - 增加主题容器：`wb-theme-provider`
 - 补充更细的导航、页脚、hero 区块组件
 
