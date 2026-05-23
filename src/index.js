@@ -15,6 +15,7 @@ import { WBLink } from './components/wb-link.js';
 import { WBMessage, WBMessageHost, showMessage } from './components/wb-message.js';
 import { WBNumber } from './components/wb-number.js';
 import { WBParagraph } from './components/wb-paragraph.js';
+import { WBSelect } from './components/wb-select.js';
 import { WBSwitch } from './components/wb-switch.js';
 import { WBTag } from './components/wb-tag.js';
 
@@ -33,6 +34,7 @@ export {
   WBMessageHost,
   WBNumber,
   WBParagraph,
+  WBSelect,
   WBSwitch,
   WBTag,
   showMessage
@@ -54,6 +56,7 @@ if (typeof window !== 'undefined') {
     WBMessageHost,
     WBNumber,
     WBParagraph,
+    WBSelect,
     WBSwitch,
     WBTag,
     showMessage,

@@ -123,6 +123,23 @@
               <wb-input label="Error" value="invalid-email" error="Please enter a valid email address"></wb-input>
             </div>
           </wb-card>
+          <wb-card title="下拉菜单 (Select)">
+            <div class="wb-demo-control-stack">
+              <wb-select label="Priority" value="medium">
+                <option value="low">Low Priority</option>
+                <option value="medium">Medium Priority</option>
+                <option value="high">High Priority</option>
+              </wb-select>
+              <wb-select label="Status" disabled>
+                <option>Active</option>
+              </wb-select>
+              <wb-select label="Required" error="Please select an option">
+                <option value="" disabled selected>Please select...</option>
+                <option value="1">Option 1</option>
+                <option value="2">Option 2</option>
+              </wb-select>
+            </div>
+          </wb-card>
         </div>
       </section>
 
