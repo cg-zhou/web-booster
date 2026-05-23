@@ -128,7 +128,6 @@ export class WBNumber extends WBBaseElement {
     const state = this.getState();
     const rangeInput = this.shadowRoot.querySelector('[data-role="range"]');
     const numberInput = this.shadowRoot.querySelector('[data-role="number"]');
-    const valueText = this.shadowRoot.querySelector('[data-role="value"]');
     const formattedValue = this.formatValue(state.value, state.precision);
 
     if (rangeInput) {
@@ -145,10 +144,6 @@ export class WBNumber extends WBBaseElement {
       numberInput.max = String(state.max);
       numberInput.step = String(state.step);
       numberInput.disabled = state.disabled;
-    }
-
-    if (valueText) {
-      valueText.textContent = formattedValue;
     }
   }
 
@@ -175,12 +170,6 @@ export class WBNumber extends WBBaseElement {
           font-size: 13px;
           font-weight: 600;
           letter-spacing: -0.01em;
-        }
-
-        .value {
-          color: #475569;
-          font-size: 12px;
-          font-variant-numeric: tabular-nums;
         }
 
         .controls {
@@ -229,7 +218,6 @@ export class WBNumber extends WBBaseElement {
       </style>
       <div class="header">
         <span class="label">${state.label || '<slot name="label">Value</slot>'}</span>
-        <span class="value" data-role="value"></span>
       </div>
       <div class="controls">
         <input data-role="range" type="range" />
