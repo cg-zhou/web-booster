@@ -106,9 +106,9 @@ export class WBSelect extends WBBaseElement {
         }
 
         .label {
-          font-size: 13px;
-          font-weight: 500;
-          color: var(--wb-text);
+          font-size: var(--wb-label-font-size);
+          font-weight: var(--wb-label-font-weight);
+          color: var(--wb-label-color);
         }
 
         .select-wrapper {

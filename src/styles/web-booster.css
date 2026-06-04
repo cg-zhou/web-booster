@@ -61,6 +61,11 @@
   --wb-font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', system-ui, sans-serif;
   --wb-font-family-code: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
 
+  /* Label */
+  --wb-label-font-size: 12px;
+  --wb-label-font-weight: 500;
+  --wb-label-color: var(--wb-text);
+
   /* Radius */
   --wb-radius-sm: 6px;
   --wb-radius-md: 8px;

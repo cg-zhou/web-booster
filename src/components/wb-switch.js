@@ -2,7 +2,7 @@ import { WBBaseElement, defineComponent, readBooleanAttribute } from './base-ele
 
 export class WBSwitch extends WBBaseElement {
   static get observedAttributes() {
-    return ['label', 'checked', 'disabled'];
+    return ['label', 'checked', 'disabled', 'layout'];
   }
 
   constructor() {
@@ -57,13 +57,31 @@ export class WBSwitch extends WBBaseElement {
     const label = this.getAttribute('label') ?? '';
     const checked = this.checked;
     const disabled = readBooleanAttribute(this, 'disabled');
+    const layout = this.getAttribute('layout') ?? 'vertical';
 
     this.shadowRoot.innerHTML = `
       <style>
         :host {
-          display: inline-flex;
+          display: block;
           color: var(--wb-text);
           font-family: var(--wb-font-family);
+        }
+
+        .wrapper {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+
+        .wrapper.horizontal {
+          flex-direction: row;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .wrapper.horizontal .label {
+          min-width: var(--wb-label-width);
+          flex-shrink: 0;
         }
 
         .switch {
@@ -74,7 +92,7 @@ export class WBSwitch extends WBBaseElement {
           display: inline-grid;
           grid-template-columns: minmax(0, 1fr) auto;
           align-items: center;
-          gap: 12px;
+          gap: 8px;
           cursor: pointer;
           color: inherit;
           font: inherit;
@@ -87,8 +105,9 @@ export class WBSwitch extends WBBaseElement {
         }
 
         .label {
-          font-size: 13px;
-          font-weight: 500;
+          font-size: var(--wb-label-font-size);
+          font-weight: var(--wb-label-font-weight);
+          color: var(--wb-label-color);
         }
 
         .track {
@@ -129,17 +148,19 @@ export class WBSwitch extends WBBaseElement {
           box-shadow: 0 0 0 3px var(--wb-focus-ring);
         }
       </style>
-      <button
-        class="switch"
-        type="button"
-        role="switch"
-        aria-checked="${checked ? 'true' : 'false'}"
-        aria-labelledby="${label ? this.inputId : ''}"
-        ${disabled ? 'disabled' : ''}
-      >
-        ${label ? `<span class="label" id="${this.inputId}">${label}</span>` : '<slot></slot>'}
-        <span class="track" aria-hidden="true"><span class="thumb"></span></span>
-      </button>
+      <div class="wrapper ${layout === 'horizontal' ? 'horizontal' : ''}">
+        <button
+          class="switch"
+          type="button"
+          role="switch"
+          aria-checked="${checked ? 'true' : 'false'}"
+          aria-labelledby="${label ? this.inputId : ''}"
+          ${disabled ? 'disabled' : ''}
+        >
+          ${label ? `<span class="label" id="${this.inputId}">${label}</span>` : '<slot></slot>'}
+          <span class="track" aria-hidden="true"><span class="thumb"></span></span>
+        </button>
+      </div>
     `;
 
     this.shadowRoot.querySelector('.switch')?.addEventListener('click', this.handleToggle);

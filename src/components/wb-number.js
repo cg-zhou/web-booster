@@ -192,9 +192,8 @@ export class WBNumber extends WBBaseElement {
         }
 
         .label {
-          font-size: 13px;
-          font-weight: 600;
-          letter-spacing: -0.01em;
+          font-size: var(--wb-label-font-size);
+          font-weight: var(--wb-label-font-weight);
         }
 
         .controls {
