@@ -174,7 +174,7 @@ export class WBNumber extends WBBaseElement {
 
         .controls {
           display: grid;
-          grid-template-columns: minmax(0, 1fr) 88px;
+          grid-template-columns: minmax(0, 1fr) 60px;
           gap: 12px;
           align-items: center;
         }
@@ -188,7 +188,7 @@ export class WBNumber extends WBBaseElement {
 
         input[type='number'] {
           width: 100%;
-          min-height: 40px;
+          height: 36px;
           padding: 0 10px;
           border: 1px solid var(--wb-input-border, var(--wb-button-border));
           border-radius: var(--wb-radius-md);

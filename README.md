@@ -69,35 +69,22 @@ npm pack --dry-run
 
 ## 发布到 NPM
 
-首次发布前先登录并确认账号：
-
 ```bash
+# 首次发布前先登录并确认账号
 npm login
 npm whoami
-```
 
-更新版本号：
-
-```bash
+# 更新版本号
 npm version patch
-```
 
-如果这次是功能发布或破坏性更新，也可以改用：
-
-```bash
+# 如果这次是功能发布，也可以改用：
 npm version minor
 npm version major
-```
 
-最后正式发布：
-
-```bash
+# 最后正式发布：
 npm publish
-```
 
-如果只是想先验证账号和权限，可以先发到 npm 的校验流程但不真正上传：
-
-```bash
+# 如果想先验证账号和权限，可以先发到 npm 的校验流程，不真正上传：
 npm publish --dry-run
 ```
 
