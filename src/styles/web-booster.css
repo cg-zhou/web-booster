@@ -75,4 +75,7 @@
   --wb-code-bg: #f8fafc;
   --wb-code-text: #334155;
   --wb-code-border: #d1d5db;
+
+  /* Label */
+  --wb-label-width: 60px;
 }

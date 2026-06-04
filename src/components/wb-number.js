@@ -21,7 +21,7 @@ function clamp(value, min, max) {
 
 export class WBNumber extends WBBaseElement {
   static get observedAttributes() {
-    return ['label', 'min', 'max', 'step', 'value', 'disabled'];
+    return ['label', 'min', 'max', 'step', 'value', 'disabled', 'layout'];
   }
 
   constructor() {
@@ -68,6 +68,7 @@ export class WBNumber extends WBBaseElement {
     const value = clamp(parseNumber(this.getAttribute('value'), fallbackValue), min, max);
     const disabled = readBooleanAttribute(this, 'disabled');
     const label = this.getAttribute('label') ?? '';
+    const layout = this.getAttribute('layout') ?? 'vertical';
 
     return {
       label,
@@ -76,6 +77,7 @@ export class WBNumber extends WBBaseElement {
       step,
       value,
       disabled,
+      layout,
       precision: Math.max(countDecimals(step), countDecimals(min), countDecimals(max))
     };
   }
@@ -150,6 +152,9 @@ export class WBNumber extends WBBaseElement {
   render() {
     const state = this.getState();
 
+    // Toggle horizontal class on host
+    this.classList.toggle('horizontal', state.layout === 'horizontal');
+
     this.shadowRoot.innerHTML = `
       <style>
         :host {
@@ -157,6 +162,26 @@ export class WBNumber extends WBBaseElement {
           gap: 10px;
           color: var(--wb-text);
           font-family: var(--wb-font-family);
+        }
+
+        :host(.horizontal) {
+          grid-template-columns: auto 1fr;
+          align-items: center;
+          gap: 12px;
+        }
+
+        :host(.horizontal) .header {
+          min-width: var(--wb-label-width);
+        }
+
+        :host(.horizontal) .body {
+          flex: 1;
+          min-width: 0;
+        }
+
+        .body {
+          display: grid;
+          gap: 10px;
         }
 
         .header {
@@ -219,9 +244,11 @@ export class WBNumber extends WBBaseElement {
       <div class="header">
         <span class="label">${state.label || '<slot name="label">Value</slot>'}</span>
       </div>
-      <div class="controls">
-        <input data-role="range" type="range" />
-        <input data-role="number" type="number" inputmode="decimal" />
+      <div class="body">
+        <div class="controls">
+          <input data-role="range" type="range" />
+          <input data-role="number" type="number" inputmode="decimal" />
+        </div>
       </div>
     `;
 

@@ -2,7 +2,7 @@ import { WBBaseElement, defineComponent, readBooleanAttribute } from './base-ele
 
 export class WBSelect extends WBBaseElement {
   static get observedAttributes() {
-    return ['label', 'value', 'disabled', 'error', 'placeholder'];
+    return ['label', 'value', 'disabled', 'error', 'placeholder', 'layout'];
   }
 
   constructor() {
@@ -72,6 +72,7 @@ export class WBSelect extends WBBaseElement {
     const label = this.getAttribute('label') ?? '';
     const disabled = readBooleanAttribute(this, 'disabled');
     const error = this.getAttribute('error') ?? '';
+    const layout = this.getAttribute('layout') ?? 'vertical';
 
     this.shadowRoot.innerHTML = `
       <style>
@@ -87,6 +88,23 @@ export class WBSelect extends WBBaseElement {
           gap: 6px;
         }
 
+        .wrapper.horizontal {
+          flex-direction: row;
+          align-items: flex-start;
+          gap: 12px;
+        }
+
+        .wrapper.horizontal .label {
+          min-width: var(--wb-label-width);
+          padding-top: 9px;
+          flex-shrink: 0;
+        }
+
+        .wrapper.horizontal .select-group {
+          flex: 1;
+          min-width: 0;
+        }
+
         .label {
           font-size: 13px;
           font-weight: 500;
@@ -97,6 +115,13 @@ export class WBSelect extends WBBaseElement {
           position: relative;
           display: flex;
           align-items: center;
+        }
+
+        .select-group {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          min-width: 0;
         }
 
         select {
@@ -149,14 +174,16 @@ export class WBSelect extends WBBaseElement {
           border-color: var(--wb-message-error-text, #b91c1c);
         }
       </style>
-      <div class="wrapper">
+      <div class="wrapper ${layout === 'horizontal' ? 'horizontal' : ''}">
         ${label ? `<label class="label">${label}</label>` : ''}
-        <div class="select-wrapper">
-          <select ?disabled="${disabled}">
-          </select>
-          <div class="arrow"></div>
+        <div class="select-group">
+          <div class="select-wrapper">
+            <select ?disabled="${disabled}">
+            </select>
+            <div class="arrow"></div>
+          </div>
+          ${error ? `<div class="error-message">${error}</div>` : ''}
         </div>
-        ${error ? `<div class="error-message">${error}</div>` : ''}
       </div>
     `;
 

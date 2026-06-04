@@ -141,6 +141,22 @@
             </div>
           </wb-card>
         </div>
+        <wb-card title="水平排列 (layout=&quot;horizontal&quot;)">
+          <div class="wb-demo-control-stack">
+            <wb-input layout="horizontal" label="Name" placeholder="Enter your name"></wb-input>
+            <wb-input layout="horizontal" label="Email" type="email" placeholder="user@example.com"></wb-input>
+            <wb-input layout="horizontal" label="Website" value="https://example.com" readonly></wb-input>
+            <wb-input layout="horizontal" label="Error" value="invalid-email" error="Please enter a valid email address"></wb-input>
+            <wb-select layout="horizontal" label="Priority" value="medium">
+              <option value="low">Low Priority</option>
+              <option value="medium">Medium Priority</option>
+              <option value="high">High Priority</option>
+            </wb-select>
+            <wb-select layout="horizontal" label="Status" disabled>
+              <option>Active</option>
+            </wb-select>
+          </div>
+        </wb-card>
       </section>
 
       <section class="wb-stack" id="tags">

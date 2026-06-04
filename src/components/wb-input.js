@@ -2,7 +2,7 @@ import { WBBaseElement, defineComponent, readBooleanAttribute } from './base-ele
 
 export class WBInput extends WBBaseElement {
   static get observedAttributes() {
-    return ['label', 'value', 'placeholder', 'type', 'disabled', 'readonly', 'error'];
+    return ['label', 'value', 'placeholder', 'type', 'disabled', 'readonly', 'error', 'layout'];
   }
 
   constructor() {
@@ -47,6 +47,7 @@ export class WBInput extends WBBaseElement {
     const disabled = readBooleanAttribute(this, 'disabled');
     const readonly = readBooleanAttribute(this, 'readonly');
     const error = this.getAttribute('error') ?? '';
+    const layout = this.getAttribute('layout') ?? 'vertical';
 
     this.shadowRoot.innerHTML = `
       <style>
@@ -62,6 +63,23 @@ export class WBInput extends WBBaseElement {
           gap: 6px;
         }
 
+        .wrapper.horizontal {
+          flex-direction: row;
+          align-items: flex-start;
+          gap: 12px;
+        }
+
+        .wrapper.horizontal .label {
+          min-width: var(--wb-label-width);
+          padding-top: 9px;
+          flex-shrink: 0;
+        }
+
+        .wrapper.horizontal .input-group {
+          flex: 1;
+          min-width: 0;
+        }
+
         .label {
           font-size: 13px;
           font-weight: 500;
@@ -72,6 +90,13 @@ export class WBInput extends WBBaseElement {
           position: relative;
           display: flex;
           align-items: center;
+        }
+
+        .input-group {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          min-width: 0;
         }
 
         input {
@@ -115,7 +140,6 @@ export class WBInput extends WBBaseElement {
         .error {
           font-size: 12px;
           color: var(--wb-error);
-          margin-top: 2px;
         }
 
         input.is-error {
@@ -133,21 +157,23 @@ export class WBInput extends WBBaseElement {
           align-items: center;
         }
       </style>
-      <div class="wrapper">
+      <div class="wrapper ${layout === 'horizontal' ? 'horizontal' : ''}">
         ${label ? `<label class="label" for="${this.inputId}">${label}</label>` : ''}
-        <div class="input-wrapper">
-          <input
-            id="${this.inputId}"
-            type="${type}"
-            .value="${value}"
-            placeholder="${placeholder}"
-            ${disabled ? 'disabled' : ''}
-            ${readonly ? 'readonly' : ''}
-            class="${error ? 'is-error' : ''}"
-          />
-          <span class="slot-right"><slot name="suffix"></slot></span>
+        <div class="input-group">
+          <div class="input-wrapper">
+            <input
+              id="${this.inputId}"
+              type="${type}"
+              .value="${value}"
+              placeholder="${placeholder}"
+              ${disabled ? 'disabled' : ''}
+              ${readonly ? 'readonly' : ''}
+              class="${error ? 'is-error' : ''}"
+            />
+            <span class="slot-right"><slot name="suffix"></slot></span>
+          </div>
+          ${error ? `<span class="error">${error}</span>` : ''}
         </div>
-        ${error ? `<span class="error">${error}</span>` : ''}
       </div>
     `;
 
