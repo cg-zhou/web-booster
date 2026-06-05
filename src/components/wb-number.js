@@ -128,24 +128,17 @@ export class WBNumber extends WBBaseElement {
 
   syncUi() {
     const state = this.getState();
+    const formattedValue = this.formatValue(state.value, state.precision);
     const rangeInput = this.shadowRoot.querySelector('[data-role="range"]');
     const numberInput = this.shadowRoot.querySelector('[data-role="number"]');
-    const formattedValue = this.formatValue(state.value, state.precision);
 
-    if (rangeInput) {
-      rangeInput.value = formattedValue;
-      rangeInput.min = String(state.min);
-      rangeInput.max = String(state.max);
-      rangeInput.step = String(state.step);
-      rangeInput.disabled = state.disabled;
-    }
-
-    if (numberInput) {
-      numberInput.value = formattedValue;
-      numberInput.min = String(state.min);
-      numberInput.max = String(state.max);
-      numberInput.step = String(state.step);
-      numberInput.disabled = state.disabled;
+    for (const el of [rangeInput, numberInput]) {
+      if (!el) continue;
+      el.value = formattedValue;
+      el.min = String(state.min);
+      el.max = String(state.max);
+      el.step = String(state.step);
+      el.disabled = state.disabled;
     }
   }
 

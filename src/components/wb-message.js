@@ -35,7 +35,6 @@ export class WBMessageHost extends WBBaseElement {
     const options = normalizeMessageInput(input);
     const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
     const type = options.type ?? 'info';
-    const duration = Number(options.duration ?? 2400);
     const message = {
       id,
       type,
@@ -46,11 +45,10 @@ export class WBMessageHost extends WBBaseElement {
     this.messages = [...this.messages, message];
     this.render();
 
-    const timerId = window.setTimeout(() => {
+    this.timers.set(id, window.setTimeout(() => {
       this.dismiss(id);
-    }, Math.max(duration, 800));
+    }, Math.max(Number(options.duration ?? 2400), 800)));
 
-    this.timers.set(id, timerId);
     return id;
   }
 

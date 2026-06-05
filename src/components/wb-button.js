@@ -15,7 +15,7 @@ export class WBButton extends WBBaseElement {
 
   render() {
     const variant = this.getAttribute('variant') === 'primary' ? 'primary' : 'secondary';
-    const size = ['sm', 'md', 'lg'].includes(this.getAttribute('size')) ? this.getAttribute('size') : 'md';
+    const size = ({ sm: 1, md: 1, lg: 1 })[this.getAttribute('size')] ? this.getAttribute('size') : 'md';
     const href = this.getAttribute('href');
     const target = this.getAttribute('target') ?? '';
     const rel = this.getAttribute('rel') ?? (target === '_blank' ? 'noreferrer' : '');

@@ -42,24 +42,9 @@ export {
 
 if (typeof window !== 'undefined') {
   window.WebBooster = {
-    WBButton,
-    WBCard,
-    WBCode,
-    getRegisteredWBIconNames,
-    registerWBIcon,
-    registerWBIcons,
-    WBInlineCode,
-    WBIcon,
-    WBInput,
-    WBLink,
-    WBMessage,
-    WBMessageHost,
-    WBNumber,
-    WBParagraph,
-    WBSelect,
-    WBSwitch,
-    WBTag,
-    showMessage,
+    WBButton, WBCard, WBCode, WBInlineCode, WBIcon, WBInput, WBLink,
+    WBMessage, WBMessageHost, WBNumber, WBParagraph, WBSelect, WBSwitch, WBTag,
+    getRegisteredWBIconNames, registerWBIcon, registerWBIcons, showMessage,
     message: WBMessage,
     icons: {
       names: getRegisteredWBIconNames,

@@ -21,13 +21,10 @@ export function defineComponent(name, ComponentClass) {
   }
 }
 
+const HTML_ESCAPE_MAP = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+
 export function escapeHtml(value) {
-  return String(value)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
+  return String(value).replaceAll(/[&<>"']/g, (ch) => HTML_ESCAPE_MAP[ch]);
 }
 
 export function readBooleanAttribute(element, name) {

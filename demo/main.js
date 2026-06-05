@@ -30,52 +30,41 @@ window.addEventListener('scroll', updateActiveLink, { passive: true });
 updateActiveLink();
 
 document.addEventListener('click', (event) => {
-	const trigger = event.target.closest('wb-button[data-message-type]');
+	const button = event.target.closest('wb-button');
+	if (!button) return;
 
-	if (!trigger || !window.WebBooster?.message) {
+	const messageApi = window.WebBooster?.message;
+
+	// Message type buttons (info/success/warning/error)
+	const msgType = button.getAttribute('data-message-type');
+	if (msgType && messageApi) {
+		const text = button.getAttribute('data-message-text') ?? '操作已完成。';
+		(messageApi[msgType] ?? messageApi.info).call(messageApi, text);
 		return;
 	}
 
-	const type = trigger.getAttribute('data-message-type') ?? 'info';
-	const text = trigger.getAttribute('data-message-text') ?? '操作已完成。';
-	const messageApi = window.WebBooster.message;
-	const handler = typeof messageApi[type] === 'function' ? messageApi[type].bind(messageApi) : messageApi.info.bind(messageApi);
-
-	handler(text);
-});
-
-document.addEventListener('click', (event) => {
-	const trigger = event.target.closest('wb-button[data-demo-click-message]');
-
-	if (!trigger || !window.WebBooster?.message) {
+	// Simple demo click message
+	const demoMsg = button.getAttribute('data-demo-click-message');
+	if (demoMsg && messageApi) {
+		messageApi.info(demoMsg);
 		return;
 	}
 
-	window.WebBooster.message.info(trigger.getAttribute('data-demo-click-message') ?? '按钮示例已点击。');
-});
-
-document.addEventListener('click', (event) => {
-	const trigger = event.target.closest('wb-button[data-adjust-target]');
-
-	if (!trigger) {
-		return;
+	// Adjust target value (e.g. rotate)
+	const targetId = button.getAttribute('data-adjust-target');
+	if (targetId) {
+		const delta = Number(button.getAttribute('data-adjust-delta') ?? 0);
+		const target = document.getElementById(targetId);
+		if (target && Number.isFinite(delta)) {
+			const nextValue = Number(target.value ?? 0) + delta;
+			target.value = nextValue;
+			target.dispatchEvent(new CustomEvent('change', {
+				bubbles: true,
+				composed: true,
+				detail: { value: nextValue }
+			}));
+		}
 	}
-
-	const targetId = trigger.getAttribute('data-adjust-target');
-	const delta = Number(trigger.getAttribute('data-adjust-delta') ?? 0);
-	const target = targetId ? document.getElementById(targetId) : null;
-
-	if (!target || Number.isNaN(delta)) {
-		return;
-	}
-
-	const nextValue = Number(target.value ?? 0) + delta;
-	target.value = nextValue;
-	target.dispatchEvent(new CustomEvent('change', {
-		bubbles: true,
-		composed: true,
-		detail: { value: Number(target.value ?? 0) }
-	}));
 });
 
 document.addEventListener('change', (event) => {
