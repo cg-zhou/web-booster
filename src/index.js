@@ -8,6 +8,7 @@
 import { WBButton } from './components/wb-button.js';
 import { WBCard } from './components/wb-card.js';
 import { WBCode } from './components/wb-code.js';
+import { WBFilePicker } from './components/wb-file-picker.js';
 import { getRegisteredWBIconNames, registerWBIcon, registerWBIcons, WBIcon } from './components/wb-icon.js';
 import { WBInlineCode } from './components/wb-inline-code.js';
 import { WBInput } from './components/wb-input.js';
@@ -23,6 +24,7 @@ export {
   WBButton,
   WBCard,
   WBCode,
+  WBFilePicker,
   getRegisteredWBIconNames,
   registerWBIcon,
   registerWBIcons,
@@ -42,7 +44,7 @@ export {
 
 if (typeof window !== 'undefined') {
   window.WebBooster = {
-    WBButton, WBCard, WBCode, WBInlineCode, WBIcon, WBInput, WBLink,
+    WBButton, WBCard, WBCode, WBFilePicker, WBInlineCode, WBIcon, WBInput, WBLink,
     WBMessage, WBMessageHost, WBNumber, WBParagraph, WBSelect, WBSwitch, WBTag,
     getRegisteredWBIconNames, registerWBIcon, registerWBIcons, showMessage,
     message: WBMessage,

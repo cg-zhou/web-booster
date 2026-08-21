@@ -16,6 +16,7 @@
           <a href="#cards">Cards</a>
           <a href="#buttons">Buttons</a>
           <a href="#inputs">Inputs</a>
+          <a href="#files">Files</a>
           <a href="#tags">Tags</a>
           <a href="#alerts">Alerts</a>
           <a href="#icons">Icons</a>
@@ -159,6 +160,29 @@
             <wb-switch layout="horizontal" label="Dark mode" checked></wb-switch>
           </div>
         </wb-card>
+      </section>
+
+      <section class="wb-stack" id="files">
+        <h2 class="wb-section-title">Files</h2>
+        <div class="wb-grid">
+          <wb-card title="文件选择器">
+            <wb-paragraph>支持点击选择或拖拽选择文件；选择图片时会自动显示等比预览。</wb-paragraph>
+            <wb-file-picker
+              accept="*/*"
+              label="点击选择或拖拽文件"
+              hint="支持任意文件类型"
+              change-label="点击此处更换文件"
+            ></wb-file-picker>
+          </wb-card>
+          <wb-card title="图片选择器">
+            <wb-file-picker
+              accept="image/*"
+              label="点击选择或拖拽图片"
+              hint="PNG · JPG · WebP"
+              change-label="点击此处更换图片"
+            ></wb-file-picker>
+          </wb-card>
+        </div>
       </section>
 
       <section class="wb-stack" id="tags">

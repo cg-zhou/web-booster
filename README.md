@@ -14,6 +14,7 @@
 - `wb-icon`：内置少量常用图标，并支持按需注册新图标
 - `wb-code`：代码文本，支持一键复制
 - `wb-input`：输入框，支持 label、placeholder、disabled、readonly、error 状态
+- `wb-file-picker`：通用文件选择器，支持点击/拖拽、文件类型校验；图片会自动显示等比预览
 - `wb-tag`：标签，支持 `default` / `primary` / `success` / `warning` / `error` 变体，可关闭
 - `styles.css`：对外暴露的精简 `--wb-*` 设计令牌
 
@@ -115,6 +116,13 @@ import 'web-booster';
 <wb-switch label="Enable shadows" checked></wb-switch>
 
 <wb-input label="Name" placeholder="Enter your name"></wb-input>
+
+<wb-file-picker
+  accept="image/*"
+  label="点击选择或拖拽图片"
+  hint="PNG · JPG · WebP"
+  change-label="点击此处更换图片"
+></wb-file-picker>
 
 <wb-tag variant="primary">Tag</wb-tag>
 <wb-tag variant="success" closable>Closable</wb-tag>
