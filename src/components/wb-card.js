@@ -54,7 +54,7 @@ export class WBCard extends WBBaseElement {
           margin: 0;
         }
       </style>
-      <article class="card">
+      <article class="card" part="card">
         ${title ? `<h3 class="title">${escapeHtml(title)}</h3>` : '<slot name="title"></slot>'}
         <div class="body"><slot></slot></div>
       </article>

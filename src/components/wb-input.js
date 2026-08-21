@@ -1,4 +1,4 @@
-import { WBBaseElement, defineComponent, readBooleanAttribute } from './base-element.js';
+import { WBBaseElement, defineComponent, escapeHtml, readBooleanAttribute } from './base-element.js';
 
 export class WBInput extends WBBaseElement {
   static get observedAttributes() {
@@ -164,8 +164,8 @@ export class WBInput extends WBBaseElement {
             <input
               id="${this.inputId}"
               type="${type}"
-              .value="${value}"
-              placeholder="${placeholder}"
+              value="${escapeHtml(value)}"
+              placeholder="${escapeHtml(placeholder)}"
               ${disabled ? 'disabled' : ''}
               ${readonly ? 'readonly' : ''}
               class="${error ? 'is-error' : ''}"
