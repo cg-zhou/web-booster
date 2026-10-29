@@ -56,7 +56,8 @@ jobs:
           npm pack --ignore-scripts --dry-run --json > "$RUNNER_TEMP/package.json"
           node --input-type=module <<'NODE'
           import { readFileSync } from 'node:fs';
-          const [pack] = JSON.parse(readFileSync(`${process.env.RUNNER_TEMP}/package.json`, 'utf8'));
+          const report = JSON.parse(readFileSync(`${process.env.RUNNER_TEMP}/package.json`, 'utf8'));
+          const [pack] = Array.isArray(report) ? report : Object.values(report);
           const paths = new Set(pack.files.map(file => file.path));
           for (const file of ['dist/web-booster.esm.js', 'dist/web-booster.min.js', 'dist/web-booster.css']) {
             if (!paths.has(file)) throw new Error(`Missing release artifact: ${file}`);
