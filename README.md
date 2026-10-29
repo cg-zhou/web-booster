@@ -181,3 +181,18 @@ registerWBIcons({
 ## 许可证
 
 MIT
+
+## 文件选择器 API
+
+`wb-file-picker` 支持单文件选择、拖拽、类型校验，以及图片缩略图。`size="sm"` 使用紧凑布局，默认是标准布局。
+
+- `file` / `image`：当前文件和已解码图片（只读，无图片时为 `null`）。
+- `loadFile(file)`：加载外部 `File`，成功接受返回 `true`；禁用或类型不符返回 `false`。
+- `clear()`：清空文件和预览，禁用时仍可由页面调用。
+- `change`：文件被接受或清空时立即触发，`event.detail` 为 `{ file, image: null }`。
+- `preview`：图片解码完成时触发，`event.detail` 为 `{ file, image }`；预览失败时 `image` 为 `null`，文件仍可使用。
+
+图片预览异步完成，不阻塞文件选择。需要解码图片的调用方应监听 `preview`，不要依赖 `change` 中的 `image`。
+组件不自动参与 `FormData`，提交时通过 `formData.set('file', picker.file)` 加入文件；表单重置时调用 `picker.clear()`。
+
+粘贴由页面监听并选择目标组件，调用 `picker.loadFile(file)`；组件不注册全局粘贴监听，避免多个实例争抢文件。普通文字粘贴、输入焦点和页面忙碌状态由页面处理。
