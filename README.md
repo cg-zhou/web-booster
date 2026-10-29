@@ -22,7 +22,7 @@
 
 ## 开发
 
-开发和 CI 使用 Node.js 24、npm 12.2.1。更新锁文件时使用相同的 npm 版本，避免依赖树解析差异。
+开发环境：Node.js 24、npm 12.2.1，与 CI 保持一致。
 
 安装依赖：
 
@@ -54,49 +54,46 @@ npm run build
 
 执行 `npm pack` / `npm publish` 前会自动触发一次 `npm run build`，避免发布旧的 `dist` 产物。
 
-## 自动发布到 npm
+## 检查与发布
 
-推送 `vX.Y.Z` 标签后，GitHub Actions 会安装依赖、构建、检查发布包内容，再通过 npm Trusted Publishing（OIDC）发布。普通推送到 `main` 不会发布，不需要保存 `NPM_TOKEN` 或每次执行 `npm login`。
+仓库包含两个 GitHub Actions 工作流：
 
-### 首次配置（只需一次）
+| 工作流 | 触发时机 | 用途 |
+| --- | --- | --- |
+| [ci.yml](.github/workflows/ci.yml) | 推送到 `main`、创建或更新 PR | 安装依赖、构建、打包预检 |
+| [publish.yml](.github/workflows/publish.yml) | 推送 `v*` 标签 | 校验版本、构建、检查包内容并发布 npm |
 
-先将 `.github/workflows/publish.yml` 推送到 GitHub，再进入 npm 的 `web-booster` 包设置，在 Trusted Publisher 中选择 GitHub Actions：
+### 发布新版本
+
+确认代码已提交、[CI 检查通过](https://github.com/cg-zhou/web-booster/actions/workflows/ci.yml)，从最新的 `main` 创建版本：
+
+```bash
+git switch main
+git pull --ff-only
+npm version patch
+
+# 将 vX.Y.Z 替换为上一步输出的标签
+git push --atomic origin main vX.Y.Z
+```
+
+修复使用 `patch`，新增功能使用 `minor`；破坏性变更按项目版本策略选择版本。
+`npm version` 会更新版本文件并创建提交和标签。发布标签必须与 `package.json` 中的版本一致；当前流程仅发布正式版本。
+
+推送标签后，在 [Publish to npm](https://github.com/cg-zhou/web-booster/actions/workflows/publish.yml) 查看发布结果。普通提交不会发布，无需在本地执行 `npm login` 或 `npm publish`。
+
+### 首次授权配置
+
+发布使用 npm Trusted Publishing（OIDC），无需配置 `NPM_TOKEN`。在 npm 包设置中添加 GitHub Actions Trusted Publisher，填写：
 
 | 字段 | 值 |
 | --- | --- |
 | Organization or user | `cg-zhou` |
 | Repository | `web-booster` |
 | Workflow filename | `publish.yml` |
-| Environment name | 留空（工作流未使用 environment） |
-| Allowed actions | 允许直接发布 `npm publish` |
+| Environment name | 留空 |
+| Allowed actions | 允许 `npm publish` |
 
-保存配置可能需要登录和 2FA；之后工作流使用临时身份凭据自动发布。无需创建 npm Token，也无需添加 GitHub Secrets。
-
-参考 [npm Trusted Publishing 官方文档](https://docs.npmjs.com/trusted-publishers/)。
-
-### 每次发版
-
-确认代码已提交、验证通过，且本地 `main` 已同步远端：
-
-```bash
-git switch main
-git pull --ff-only
-
-# 修复用 patch；新增功能用 minor；破坏性变更按项目版本策略选择版本
-npm version patch
-
-# 将本次版本提交和新建的标签推送到 GitHub
-# 将下面的 vX.Y.Z 替换为 npm version 输出的实际标签
-git push origin main
-git push origin vX.Y.Z
-```
-
-`npm version` 会同步更新 `package.json` 和 `package-lock.json`，创建版本提交及标签。
-工作流仅接受与 `package.json` 一致的正式版本标签；预发布版本需要另行配置 npm dist-tag。
-
-在 [GitHub Actions](https://github.com/cg-zhou/web-booster/actions/workflows/publish.yml) 查看结果。若首次发布因授权配置失败，修正 npm 设置后可重跑失败的任务；若版本已成功发布，后续修改需要使用新版本号。
-
-本地预检可执行 `npm pack --dry-run`，它会通过 `prepack` 自动构建库，不会发布到 npm。
+此配置只需完成一次。详见 [npm Trusted Publishing 文档](https://docs.npmjs.com/trusted-publishers/)。
 
 ## 使用方式
 
