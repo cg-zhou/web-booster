@@ -52,42 +52,49 @@ npm run build
 
 执行 `npm pack` / `npm publish` 前会自动触发一次 `npm run build`，避免发布旧的 `dist` 产物。
 
-## 发布前检查
+## 自动发布到 npm
 
-建议每次发版前至少执行：
+推送 `vX.Y.Z` 标签后，GitHub Actions 会安装依赖、构建、检查发布包内容，再通过 npm Trusted Publishing（OIDC）发布。普通推送到 `main` 不会发布，不需要保存 `NPM_TOKEN` 或每次执行 `npm login`。
+
+### 首次配置（只需一次）
+
+先将 `.github/workflows/publish.yml` 推送到 GitHub，再进入 npm 的 `web-booster` 包设置，在 Trusted Publisher 中选择 GitHub Actions：
+
+| 字段 | 值 |
+| --- | --- |
+| Organization or user | `cg-zhou` |
+| Repository | `web-booster` |
+| Workflow filename | `publish.yml` |
+| Environment name | 留空（工作流未使用 environment） |
+| Allowed actions | 允许直接发布 `npm publish` |
+
+保存配置可能需要登录和 2FA；之后工作流使用临时身份凭据自动发布。无需创建 npm Token，也无需添加 GitHub Secrets。
+
+参考 [npm Trusted Publishing 官方文档](https://docs.npmjs.com/trusted-publishers/)。
+
+### 每次发版
+
+确认代码已提交、验证通过，且本地 `main` 已同步远端：
 
 ```bash
-npm install
-npm run build
-npm pack --dry-run
-```
+git switch main
+git pull --ff-only
 
-重点确认：
-
-- `package.json` 中的 `version` 已更新
-- `npm pack --dry-run` 输出中包含 `dist/web-booster.esm.js`、`dist/web-booster.min.js`、`dist/web-booster.css`
-- README 示例与当前导出 API 一致
-
-## 发布到 NPM
-
-```bash
-# 首次发布前先登录并确认账号
-npm login
-npm whoami
-
-# 更新版本号
+# 修复用 patch；新增功能用 minor；破坏性变更按项目版本策略选择版本
 npm version patch
 
-# 如果这次是功能发布，也可以改用：
-npm version minor
-npm version major
-
-# 最后正式发布：
-npm publish
-
-# 如果想先验证账号和权限，可以先发到 npm 的校验流程，不真正上传：
-npm publish --dry-run
+# 将本次版本提交和新建的标签推送到 GitHub
+# 将下面的 vX.Y.Z 替换为 npm version 输出的实际标签
+git push origin main
+git push origin vX.Y.Z
 ```
+
+`npm version` 会同步更新 `package.json` 和 `package-lock.json`，创建版本提交及标签。
+工作流仅接受与 `package.json` 一致的正式版本标签；预发布版本需要另行配置 npm dist-tag。
+
+在 [GitHub Actions](https://github.com/cg-zhou/web-booster/actions/workflows/publish.yml) 查看结果。若首次发布因授权配置失败，修正 npm 设置后可重跑失败的任务；若版本已成功发布，后续修改需要使用新版本号。
+
+本地预检可执行 `npm pack --dry-run`，它会通过 `prepack` 自动构建库，不会发布到 npm。
 
 ## 使用方式
 
