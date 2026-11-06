@@ -1,4 +1,4 @@
-﻿# web-booster
+# web-booster
 
 原生 Web Components + 设计令牌样式库，目标是为多技术栈站点提供一套统一的基础 UI。
 
@@ -202,3 +202,15 @@ MIT
 组件不自动参与 `FormData`，提交时通过 `formData.set('file', picker.file)` 加入文件；表单重置时调用 `picker.clear()`。
 
 粘贴由页面监听并选择目标组件，调用 `picker.loadFile(file)`；组件不注册全局粘贴监听，避免多个实例争抢文件。普通文字粘贴、输入焦点和页面忙碌状态由页面处理。
+
+
+## 示例站
+
+`npm run dev` 启动组件示例站。
+`npm run build:demo` 输出独立静态站点到 `demo-dist/`（相对资源路径，可放在子目录）；
+`npm run preview` 预览构建结果。示例站和 npm 组件产物分别构建，部署位置另行选择。
+
+`wb-input` / `wb-select` 的 `value` 属性用于设置值，`.value` 读取当前值；
+修改标签、布局或错误提示会保留当前值。`wb-switch.checked` 可程序赋值。
+程序赋值不会触发 `input` / `change`；用户输入或切换通过冒泡的自定义事件返回
+`detail.value` 或 `detail.checked`。这些组件尚不支持原生表单提交。

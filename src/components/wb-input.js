@@ -16,26 +16,29 @@ export class WBInput extends WBBaseElement {
     this.render();
   }
 
-  attributeChangedCallback() {
-    if (!this.isConnected) {
-      return;
+  attributeChangedCallback(name) {
+    if (name === 'value') {
+      const input = this.shadowRoot.querySelector('input');
+      if (input) input.value = this.getAttribute('value') ?? '';
     }
-    this.render();
+    if (this.isConnected) this.render();
   }
 
   get value() {
-    return this.shadowRoot.querySelector('input')?.value ?? '';
+    return this.shadowRoot.querySelector('input')?.value ?? this.getAttribute('value') ?? '';
   }
 
   set value(nextValue) {
-    this.setAttribute('value', nextValue);
+    this.setAttribute('value', nextValue ?? '');
   }
 
   handleInput(event) {
+    event.stopPropagation();
     this.emit('input', { value: event.target.value });
   }
 
   handleChange(event) {
+    event.stopPropagation();
     this.emit('change', { value: event.target.value });
   }
 
@@ -49,6 +52,24 @@ export class WBInput extends WBBaseElement {
     const error = this.getAttribute('error') ?? '';
     const layout = this.getAttribute('layout') ?? 'vertical';
 
+    const existing = this.shadowRoot.querySelector('input');
+    if (existing) {
+      const labelNode = this.shadowRoot.querySelector('.label');
+      labelNode.textContent = label;
+      labelNode.hidden = !label;
+      if (existing.type !== type) existing.type = type;
+      existing.placeholder = placeholder;
+      existing.disabled = disabled;
+      existing.readOnly = readonly;
+      existing.classList.toggle('is-error', Boolean(error));
+      existing.setAttribute('aria-invalid', String(Boolean(error)));
+      const errorNode = this.shadowRoot.querySelector('.error');
+      errorNode.textContent = error;
+      errorNode.hidden = !error;
+      existing.setAttribute('aria-describedby', error ? `${this.inputId}-error` : '');
+      this.shadowRoot.querySelector('.wrapper').classList.toggle('horizontal', layout === 'horizontal');
+      return;
+    }
     this.shadowRoot.innerHTML = `
       <style>
         :host {
@@ -158,12 +179,12 @@ export class WBInput extends WBBaseElement {
         }
       </style>
       <div class="wrapper ${layout === 'horizontal' ? 'horizontal' : ''}">
-        ${label ? `<label class="label" for="${this.inputId}">${label}</label>` : ''}
+        <label class="label" for="${this.inputId}" ${label ? '' : 'hidden'}>${escapeHtml(label)}</label>
         <div class="input-group">
           <div class="input-wrapper">
             <input
               id="${this.inputId}"
-              type="${type}"
+              type="${escapeHtml(type)}"
               value="${escapeHtml(value)}"
               placeholder="${escapeHtml(placeholder)}"
               ${disabled ? 'disabled' : ''}
@@ -172,7 +193,7 @@ export class WBInput extends WBBaseElement {
             />
             <span class="slot-right"><slot name="suffix"></slot></span>
           </div>
-          ${error ? `<span class="error">${error}</span>` : ''}
+          <span class="error" id="${this.inputId}-error" ${error ? '' : 'hidden'}>${escapeHtml(error)}</span>
         </div>
       </div>
     `;
@@ -180,6 +201,7 @@ export class WBInput extends WBBaseElement {
     const input = this.shadowRoot.querySelector('input');
     input?.addEventListener('input', this.handleInput);
     input?.addEventListener('change', this.handleChange);
+    this.render();
   }
 }
 

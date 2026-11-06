@@ -1,4 +1,4 @@
-import { WBBaseElement, defineComponent, readBooleanAttribute } from './base-element.js';
+import { WBBaseElement, defineComponent, escapeHtml, readBooleanAttribute } from './base-element.js';
 
 export class WBSelect extends WBBaseElement {
   static get observedAttributes() {
@@ -7,13 +7,27 @@ export class WBSelect extends WBBaseElement {
 
   constructor() {
     super();
+    this.inputId = `wb-select-${Math.random().toString(36).slice(2, 8)}`;
+    this.optionsObserver = new MutationObserver((records) => {
+      if (!records.some((record) => record.type !== 'attributes' || record.target !== this)) return;
+      const value = this.value;
+      this.renderOptions();
+      this.shadowRoot.querySelector('select').value = value;
+    });
     this.handleChange = this.handleChange.bind(this);
   }
 
   connectedCallback() {
+    const currentValue = this.shadowRoot.querySelector('select')?.value;
     this.render();
     this.renderOptions();
-    this.syncValue();
+    if (currentValue !== undefined) this.shadowRoot.querySelector('select').value = currentValue;
+    if (this.hasAttribute('value')) this.syncValue();
+    this.optionsObserver.observe(this, { childList: true, subtree: true, attributes: true, characterData: true });
+  }
+
+  disconnectedCallback() {
+    this.optionsObserver.disconnect();
   }
 
   attributeChangedCallback(name) {
@@ -32,12 +46,14 @@ export class WBSelect extends WBBaseElement {
   }
 
   set value(nextValue) {
-    this.setAttribute('value', nextValue);
+    this.setAttribute('value', nextValue ?? '');
   }
 
   handleChange(event) {
+    event.stopPropagation();
     const newValue = event.target.value;
     this.setAttribute('value', newValue);
+    this.emit('input', { value: newValue });
     this.emit('change', { value: newValue });
   }
 
@@ -54,7 +70,7 @@ export class WBSelect extends WBBaseElement {
 
     // Clear existing options except placeholder
     const placeholder = this.getAttribute('placeholder');
-    select.innerHTML = placeholder ? `<option value="" disabled selected>${placeholder}</option>` : '';
+    select.innerHTML = placeholder ? `<option value="" data-placeholder disabled selected>${escapeHtml(placeholder)}</option>` : '';
 
     // Project light DOM options into shadow DOM select
     const options = this.querySelectorAll('option');
@@ -74,6 +90,30 @@ export class WBSelect extends WBBaseElement {
     const error = this.getAttribute('error') ?? '';
     const layout = this.getAttribute('layout') ?? 'vertical';
 
+    const existing = this.shadowRoot.querySelector('select');
+    if (existing) {
+      existing.disabled = disabled;
+      existing.setAttribute('aria-invalid', String(Boolean(error)));
+      existing.setAttribute('aria-describedby', error ? `${this.inputId}-error` : '');
+      const labelNode = this.shadowRoot.querySelector('.label');
+      labelNode.textContent = label;
+      labelNode.hidden = !label;
+      const errorNode = this.shadowRoot.querySelector('.error-message');
+      errorNode.textContent = error;
+      errorNode.hidden = !error;
+      this.shadowRoot.querySelector('.wrapper').classList.toggle('horizontal', layout === 'horizontal');
+      const placeholderOption = existing.querySelector('option[data-placeholder]');
+      if (placeholderOption) {
+        placeholderOption.textContent = this.getAttribute('placeholder') ?? '';
+        if (!this.hasAttribute('placeholder')) placeholderOption.remove();
+      } else if (this.hasAttribute('placeholder')) {
+        const option = new Option(this.getAttribute('placeholder'), '');
+        option.disabled = true;
+        option.dataset.placeholder = '';
+        existing.prepend(option);
+      }
+      return;
+    }
     this.shadowRoot.innerHTML = `
       <style>
         :host {
@@ -175,20 +215,23 @@ export class WBSelect extends WBBaseElement {
         }
       </style>
       <div class="wrapper ${layout === 'horizontal' ? 'horizontal' : ''}">
-        ${label ? `<label class="label">${label}</label>` : ''}
+        <label class="label" for="${this.inputId}" ${label ? '' : 'hidden'}>${escapeHtml(label)}</label>
         <div class="select-group">
           <div class="select-wrapper">
-            <select ?disabled="${disabled}">
+            <select id="${this.inputId}" ${disabled ? 'disabled' : ''}>
             </select>
             <div class="arrow"></div>
           </div>
-          ${error ? `<div class="error-message">${error}</div>` : ''}
+          <div class="error-message" id="${this.inputId}-error" ${error ? '' : 'hidden'}>${escapeHtml(error)}</div>
         </div>
       </div>
     `;
 
-    this.shadowRoot.querySelector('select').addEventListener('change', this.handleChange);
+    const select = this.shadowRoot.querySelector('select');
+    select.addEventListener('input', (event) => event.stopPropagation());
+    select.addEventListener('change', this.handleChange);
     this.renderOptions();
+    this.render();
   }
 }
 

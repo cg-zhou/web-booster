@@ -18,7 +18,9 @@
   "scripts": {
     "dev": "vite",
     "build": "node ./scripts/build.mjs",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "build:demo": "vite build --outDir demo-dist --base ./",
+    "preview": "vite preview --outDir demo-dist --port 4173"
   },
   "keywords": [
     "web-components",

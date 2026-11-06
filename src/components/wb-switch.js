@@ -1,4 +1,4 @@
-import { WBBaseElement, defineComponent, readBooleanAttribute } from './base-element.js';
+import { WBBaseElement, defineComponent, escapeHtml, readBooleanAttribute } from './base-element.js';
 
 export class WBSwitch extends WBBaseElement {
   static get observedAttributes() {
@@ -28,10 +28,11 @@ export class WBSwitch extends WBBaseElement {
   }
 
   set checked(nextValue) {
-    this.toggleChecked(Boolean(nextValue), 'change');
+    this.toggleAttribute('checked', Boolean(nextValue));
   }
 
   toggleChecked(nextChecked, eventName) {
+    if (nextChecked === this.checked) return;
     if (nextChecked) {
       this.setAttribute('checked', '');
     } else {
@@ -59,6 +60,19 @@ export class WBSwitch extends WBBaseElement {
     const disabled = readBooleanAttribute(this, 'disabled');
     const layout = this.getAttribute('layout') ?? 'vertical';
 
+    const existing = this.shadowRoot.querySelector('.switch');
+    if (existing) {
+      existing.disabled = disabled;
+      existing.setAttribute('aria-checked', String(checked));
+      if (label) existing.setAttribute('aria-labelledby', this.inputId);
+      else existing.removeAttribute('aria-labelledby');
+      const labelNode = this.shadowRoot.querySelector('.label');
+      labelNode.textContent = label;
+      labelNode.hidden = !label;
+      this.shadowRoot.querySelector('slot').hidden = Boolean(label);
+      this.shadowRoot.querySelector('.wrapper').classList.toggle('horizontal', layout === 'horizontal');
+      return;
+    }
     this.shadowRoot.innerHTML = `
       <style>
         :host {
@@ -154,10 +168,10 @@ export class WBSwitch extends WBBaseElement {
           type="button"
           role="switch"
           aria-checked="${checked ? 'true' : 'false'}"
-          aria-labelledby="${label ? this.inputId : ''}"
+          ${label ? `aria-labelledby="${this.inputId}"` : ''}
           ${disabled ? 'disabled' : ''}
         >
-          ${label ? `<span class="label" id="${this.inputId}">${label}</span>` : '<slot></slot>'}
+          <span class="label" id="${this.inputId}" ${label ? '' : 'hidden'}>${escapeHtml(label)}</span><slot ${label ? 'hidden' : ''}></slot>
           <span class="track" aria-hidden="true"><span class="thumb"></span></span>
         </button>
       </div>

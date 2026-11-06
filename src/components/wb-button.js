@@ -1,8 +1,18 @@
-import { WBBaseElement, defineComponent, readBooleanAttribute } from './base-element.js';
+import { WBBaseElement, defineComponent, escapeHtml, readBooleanAttribute } from './base-element.js';
 
 export class WBButton extends WBBaseElement {
   static get observedAttributes() {
     return ['variant', 'size', 'href', 'target', 'rel', 'disabled'];
+  }
+
+  constructor() {
+    super();
+    this.addEventListener('click', (event) => {
+      if (readBooleanAttribute(this, 'disabled')) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }
+    }, { capture: true });
   }
 
   connectedCallback() {
@@ -57,6 +67,11 @@ export class WBButton extends WBBaseElement {
           box-shadow: 0 1px 2px #0f172a08;
         }
 
+        .button:focus-visible {
+          outline: 3px solid var(--wb-focus-ring);
+          outline-offset: 3px;
+        }
+
         .button:hover {
           background: var(--_wb-button-bg-hover);
           border-color: var(--_wb-button-border-hover);
@@ -102,10 +117,11 @@ export class WBButton extends WBBaseElement {
       </style>
       <${tag}
         class="${className}"
-        ${tag === 'button' ? 'type="button"' : ''}
-        ${href ? `href="${href}"` : ''}
-        ${target ? `target="${target}"` : ''}
-        ${rel ? `rel="${rel}"` : ''}
+        ${tag === 'button' ? `type="button" ${disabled ? 'disabled' : ''}` : ''}
+        ${tag === 'a' && disabled ? 'tabindex="-1"' : ''}
+        ${href ? `href="${escapeHtml(href)}"` : ''}
+        ${target ? `target="${escapeHtml(target)}"` : ''}
+        ${rel ? `rel="${escapeHtml(rel)}"` : ''}
         ${disabled ? 'aria-disabled="true"' : ''}
       ><slot></slot></${tag}>
     `;
